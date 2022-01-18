@@ -1,7 +1,7 @@
 package springWeb.service;
 
 import springWeb.DTO.response.UserResponse;
-import springWeb.repositoryJPA.User;
+import springWeb.repositoryJPA.entity.User;
 import springWeb.exception.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

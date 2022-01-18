@@ -1,6 +1,9 @@
 package springWeb.DTO.response;
 
-import springWeb.repositoryJPA.User;
+import springWeb.repositoryJPA.entity.Order;
+import springWeb.repositoryJPA.entity.User;
+
+import java.util.List;
 
 public class UserResponse {
 
@@ -8,15 +11,17 @@ public class UserResponse {
     private String name;
     private String email;
     private String phone;
+    private List<Order> order;
 
     public UserResponse() {
     }
 
-    public UserResponse(Integer id, String name, String email, String phone) {
+    public UserResponse(Integer id, String name, String email, String phone, List<Order> order) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.order = order;
     }
 
     public Integer getId() {
@@ -51,7 +56,15 @@ public class UserResponse {
         this.phone = phone;
     }
 
+    public List<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(List<Order> order) {
+        this.order = order;
+    }
+
     public UserResponse toReponse (User user){
-        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getPhone());
+        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getOrders());
     }
 }

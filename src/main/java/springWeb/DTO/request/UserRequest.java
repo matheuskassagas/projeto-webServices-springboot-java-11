@@ -1,6 +1,6 @@
 package springWeb.DTO.request;
 
-import springWeb.repositoryJPA.User;
+import springWeb.repositoryJPA.entity.User;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
