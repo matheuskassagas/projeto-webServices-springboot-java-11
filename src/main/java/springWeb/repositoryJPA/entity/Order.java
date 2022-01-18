@@ -23,7 +23,7 @@ public class Order implements Serializable {
 
     public Order() {
     }
-    
+
     public Order(Integer id, Instant moment, User client) {
         this.id = id;
         this.moment = moment;
