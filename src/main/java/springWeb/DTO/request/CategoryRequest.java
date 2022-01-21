@@ -4,15 +4,15 @@ import springWeb.repositoryJPA.entity.Category;
 
 import javax.validation.constraints.NotBlank;
 
-public class CartegoryRequest {
+public class CategoryRequest {
 
     @NotBlank
     private String name;
 
-    public CartegoryRequest() {
+    public CategoryRequest() {
     }
 
-    public CartegoryRequest(String name) {
+    public CategoryRequest(String name) {
         this.name = name;
     }
 
@@ -22,5 +22,9 @@ public class CartegoryRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Category toModel (CategoryRequest categoryRequest){
+        return new Category(categoryRequest.getName());
     }
 }

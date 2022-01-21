@@ -29,8 +29,8 @@ public class CategoryService {
 
         if(category.isPresent()){
             return new CategoryResponse().toResponse(category.get());
-        }else{
-            throw new DomainException("Id: " + id + " not found in database");
         }
+        throw new DomainException("Id: " + id + " not found in database");
+
     }
 }
