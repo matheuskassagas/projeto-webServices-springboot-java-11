@@ -50,10 +50,18 @@ public class TestConfig implements CommandLineRunner {
 
         userRepositoryJPA.saveAll(Arrays.asList(u1, u2));
         orderRepositoryJPA.saveAll(Arrays.asList(o1, o2, o3));
+        categoryRepositoryJPA.saveAll(Arrays.asList(cat1, cat2, cat3));
+        productRepositoryJPA.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+
+        p1.getCategories().add(cat2);
+        p2.getCategories().add(cat1);
+        p2.getCategories().add(cat3);
+        p3.getCategories().add(cat3);
+        p4.getCategories().add(cat3);
+        p5.getCategories().add(cat2);
 
         productRepositoryJPA.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 
-        cat3.getProducts().addAll(Arrays.asList(p3, p4));
-        categoryRepositoryJPA.saveAll(Arrays.asList(cat1, cat2, cat3));
+
     }
 }
