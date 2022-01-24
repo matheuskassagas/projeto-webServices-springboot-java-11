@@ -2,15 +2,18 @@ package springWeb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import springWeb.DTO.request.CategoryRequest;
+import springWeb.DTO.request.ProductRequest;
 import springWeb.DTO.response.CategoryResponse;
 import springWeb.DTO.response.OrderResponse;
+import springWeb.repositoryJPA.entity.Category;
+import springWeb.repositoryJPA.entity.Product;
 import springWeb.service.CategoryService;
 import springWeb.service.OrderService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,5 +32,24 @@ public class CategoryController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> findById(@PathVariable Integer id) throws Exception {
         return ResponseEntity.ok().body(categoryService.findById(id));
+    }
+
+    @RequestMapping(method =  RequestMethod.POST)
+    public ResponseEntity<?> create (@RequestBody CategoryRequest categoryRequest){
+        Category categoryNew = categoryService.create(categoryRequest);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoryNew.getId()).toUri();
+        return ResponseEntity.created(uri).body(categoryNew);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> delete (@PathVariable Integer id){
+        categoryService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> update (@PathVariable Integer id, @RequestBody CategoryRequest categoryRequest){
+        Category categoryNew = categoryService.update(id, categoryRequest);
+        return ResponseEntity.ok().body(categoryNew);
     }
 }
