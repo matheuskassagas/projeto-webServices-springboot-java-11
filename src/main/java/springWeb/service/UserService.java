@@ -1,5 +1,7 @@
 package springWeb.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import springWeb.DTO.request.UserRequest;
 import springWeb.DTO.response.UserResponse;
 import springWeb.repositoryJPA.entity.User;
@@ -7,6 +9,7 @@ import springWeb.exception.DomainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springWeb.repositoryJPA.UserRepositoryJPA;
+import springWeb.service.exception.DataBaseException;
 import springWeb.service.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -35,7 +38,13 @@ public class UserService {
     }
 
     public void delete (Integer id){
-        userRepositoryJPA.deleteById(id);
+        try{
+            userRepositoryJPA.deleteById(id);
+        } catch(EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DataBaseException(e.getMessage());
+        }
     }
 
     public User update (Integer id, UserRequest userRequest){
