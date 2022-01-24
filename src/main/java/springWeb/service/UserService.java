@@ -1,5 +1,6 @@
 package springWeb.service;
 
+import springWeb.DTO.request.UserRequest;
 import springWeb.DTO.response.UserResponse;
 import springWeb.repositoryJPA.entity.User;
 import springWeb.exception.DomainException;
@@ -29,5 +30,10 @@ public class UserService {
         }else{
             throw new DomainException("Id: " + id + " not found in database");
         }
+    }
+
+    public User create (UserRequest userRequest){
+        User userJpa = userRequest.toModel(userRequest);
+        return userRepositoryJPA.save(userJpa);
     }
 }

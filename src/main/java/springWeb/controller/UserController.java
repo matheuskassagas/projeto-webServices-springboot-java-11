@@ -1,12 +1,16 @@
 package springWeb.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import springWeb.DTO.request.UserRequest;
 import springWeb.DTO.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springWeb.repositoryJPA.entity.User;
 import springWeb.service.UserService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,5 +29,12 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> findById(@PathVariable Integer id) throws Exception {
         return ResponseEntity.ok().body(userService.findById(id));
+    }
+
+    @RequestMapping(method =  RequestMethod.POST)
+    public ResponseEntity<?> create (@RequestBody UserRequest userRequest){
+        User userNew = userService.create(userRequest);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userNew.getId()).toUri();
+        return ResponseEntity.created(uri).body(userNew);
     }
 }
