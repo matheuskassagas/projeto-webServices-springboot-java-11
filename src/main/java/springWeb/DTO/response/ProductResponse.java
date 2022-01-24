@@ -1,5 +1,8 @@
 package springWeb.DTO.response;
 
+import springWeb.repositoryJPA.entity.Category;
+import springWeb.repositoryJPA.entity.Order;
+import springWeb.repositoryJPA.entity.OrderItem;
 import springWeb.repositoryJPA.entity.Product;
 
 import java.util.HashSet;
@@ -13,15 +16,19 @@ public class ProductResponse {
     private Double price;
     private String imgUrl;
 
+    private Set<Category> categories = new HashSet<>();
+
+
     public ProductResponse() {
     }
 
-    public ProductResponse(Integer id, String name, String descricao, Double price, String imgUrl) {
+    public ProductResponse(Integer id, String name, String descricao, Double price, String imgUrl, Set<Category> categories) {
         this.id = id;
         this.name = name;
         this.descricao = descricao;
         this.price = price;
         this.imgUrl = imgUrl;
+        this.categories = categories;
     }
 
     public Integer getId() {
@@ -64,7 +71,12 @@ public class ProductResponse {
         this.imgUrl = imgUrl;
     }
 
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
     public ProductResponse toResponse (Product product){
-        return new ProductResponse(product.getId(), product.getName(), product.getDescricao(), product.getPrice(), product.getImgUrl());
+        return new ProductResponse(product.getId(), product.getName(), product.getDescricao(), product.getPrice(),  product.getImgUrl(), product.getCategories());
     }
 }
