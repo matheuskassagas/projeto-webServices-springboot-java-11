@@ -2,6 +2,7 @@ package springWeb.DTO.response;
 
 import springWeb.repositoryJPA.entity.Order;
 import springWeb.repositoryJPA.entity.OrderItem;
+import springWeb.repositoryJPA.entity.Payment;
 import springWeb.repositoryJPA.entity.User;
 import springWeb.repositoryJPA.entity.enums.OrderStatus;
 
@@ -17,20 +18,18 @@ public class OrderResponse {
     private Integer orderStatus;
     private User client;
     private Set<OrderItem> items = new HashSet<>();
+    private Payment payment;
 
     public OrderResponse() {
     }
 
-    public OrderResponse(Set<OrderItem> items) {
-        this.items = items;
-    }
-
-    public OrderResponse(Integer id, Instant moment, OrderStatus orderStatus, User client, Set<OrderItem> items) {
+    public OrderResponse(Integer id, Instant moment, OrderStatus orderStatus, User client, Set<OrderItem> items, Payment payment) {
         this.id = id;
         this.moment = moment;
         this.orderStatus = orderStatus.getCode();
         this.client = client;
         this.items = items;
+        this.payment = payment;
     }
 
     public Integer getId() {
@@ -69,7 +68,11 @@ public class OrderResponse {
         this.orderStatus = orderStatus.getCode();
     }
 
+    public Payment getPayment() {
+        return payment;
+    }
+
     public OrderResponse toResponse (Order order){
-        return new OrderResponse(order.getId(), order.getMoment(), order.getOrderStatus(), order.getClient(), order.getItems());
+        return new OrderResponse(order.getId(), order.getMoment(), order.getOrderStatus(), order.getClient(), order.getItems(), order.getPayment());
     }
 }

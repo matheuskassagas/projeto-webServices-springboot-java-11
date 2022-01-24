@@ -32,7 +32,7 @@ public class TestConfig implements CommandLineRunner {
 
         Order o1 = new Order(Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.PAID, u1);
         Order o2 = new Order(Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2);
-        Order o3 = new Order(Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.CANCELED, u1);
+        Order o3 = new Order(Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMENT, u1);
 
         Category cat1 = new Category("Electronics");
         Category cat2 = new Category("Books");
@@ -65,5 +65,8 @@ public class TestConfig implements CommandLineRunner {
 
         orderItemRepositoryJPA.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 
+        Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+        o1.setPayment(pay1);
+        orderRepositoryJPA.save(o1);
     }
 }
