@@ -12,6 +12,7 @@ import springWeb.repositoryJPA.UserRepositoryJPA;
 import springWeb.service.exception.DataBaseException;
 import springWeb.service.exception.ResourceNotFoundException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +24,6 @@ public class UserService {
     private UserRepositoryJPA userRepositoryJPA;
 
     public List<UserResponse> findAll(){
-
         return userRepositoryJPA.findAll().stream().map(user -> new UserResponse().toReponse(user)).collect(Collectors.toList());
     }
 
@@ -48,9 +48,14 @@ public class UserService {
     }
 
     public User update (Integer id, UserRequest userRequest){
-        User entity = userRepositoryJPA.getById(id);//nao vai no banco de dados, só deixa um objeto monitorado pelo jpa para trabalhar com ele e depois efetuar a operação no bd
-        updateDate(entity, userRequest);
-        return userRepositoryJPA.save(entity);
+        try{
+            User entity = userRepositoryJPA.getById(id);//nao vai no banco de dados, só deixa um objeto monitorado pelo jpa para trabalhar com ele e depois efetuar a operação no bd
+            updateDate(entity, userRequest);
+            return userRepositoryJPA.save(entity);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException(id);
+        }
+
     }
 
     private void updateDate(User entity, UserRequest userRequest) {
