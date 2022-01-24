@@ -40,4 +40,16 @@ public class UserService {
     public void delete (Integer id){
         userRepositoryJPA.deleteById(id);
     }
+
+    public User update (Integer id, UserRequest userRequest){
+        User entity = userRepositoryJPA.getById(id);//nao vai no banco de dados, só deixa um objeto monitorado pelo jpa para trabalhar com ele e depois efetuar a operação no bd
+        updateDate(entity, userRequest);
+        return userRepositoryJPA.save(entity);
+    }
+
+    private void updateDate(User entity, UserRequest userRequest) {
+        entity.setName(userRequest.getName());
+        entity.setEmail(userRequest.getEmail());
+        entity.setPhone(userRequest.getPhone());
+    }
 }
