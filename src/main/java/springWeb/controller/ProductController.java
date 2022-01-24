@@ -2,15 +2,18 @@ package springWeb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import springWeb.DTO.request.ProductRequest;
+import springWeb.DTO.request.UserRequest;
 import springWeb.DTO.response.CategoryResponse;
 import springWeb.DTO.response.ProductResponse;
+import springWeb.repositoryJPA.entity.Product;
+import springWeb.repositoryJPA.entity.User;
 import springWeb.service.CategoryService;
 import springWeb.service.ProductService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,5 +32,24 @@ public class ProductController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> findById(@PathVariable Integer id) throws Exception {
         return ResponseEntity.ok().body(productService.findById(id));
+    }
+
+    @RequestMapping(method =  RequestMethod.POST)
+    public ResponseEntity<?> create (@RequestBody ProductRequest productRequest){
+        Product productNew = productService.create(productRequest);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productNew.getId()).toUri();
+        return ResponseEntity.created(uri).body(productNew);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> delete (@PathVariable Integer id){
+        productService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> update (@PathVariable Integer id, @RequestBody ProductRequest productRequest){
+        Product productNew = productService.update(id, productRequest);
+        return ResponseEntity.ok().body(productNew);
     }
 }
