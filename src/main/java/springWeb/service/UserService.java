@@ -36,4 +36,8 @@ public class UserService {
         User userJpa = userRequest.toModel(userRequest);
         return userRepositoryJPA.save(userJpa);
     }
+
+    public void delete (Integer id){
+        userRepositoryJPA.deleteById(id);
+    }
 }
