@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable//classe auxiliar de chave primaria composta... é composição de alguma classe
-public class OrdemItemPK implements Serializable {
+public class OrderItemPK implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ManyToOne
@@ -37,7 +37,7 @@ public class OrdemItemPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrdemItemPK that = (OrdemItemPK) o;
+        OrderItemPK that = (OrderItemPK) o;
         return Objects.equals(product, that.product) && Objects.equals(order, that.order);
     }
 

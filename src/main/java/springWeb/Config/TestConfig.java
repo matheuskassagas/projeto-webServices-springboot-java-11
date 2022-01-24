@@ -3,14 +3,8 @@ package springWeb.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
-import springWeb.repositoryJPA.CategoryRepositoryJPA;
-import springWeb.repositoryJPA.OrderRepositoryJPA;
-import springWeb.repositoryJPA.ProductRepositoryJPA;
-import springWeb.repositoryJPA.entity.Category;
-import springWeb.repositoryJPA.entity.Order;
-import springWeb.repositoryJPA.entity.Product;
-import springWeb.repositoryJPA.entity.User;
-import springWeb.repositoryJPA.UserRepositoryJPA;
+import springWeb.repositoryJPA.*;
+import springWeb.repositoryJPA.entity.*;
 import springWeb.repositoryJPA.entity.enums.OrderStatus;
 
 import java.time.Instant;
@@ -27,6 +21,8 @@ public class TestConfig implements CommandLineRunner {
     private CategoryRepositoryJPA categoryRepositoryJPA;
     @Autowired
     private ProductRepositoryJPA productRepositoryJPA;
+    @Autowired
+    private OrderItemRepositoryJPA orderItemRepositoryJPA;
 
     @Override
     public void run(String... args) throws Exception {
@@ -34,9 +30,9 @@ public class TestConfig implements CommandLineRunner {
         User u1 = new User("Maria Brown", "maria@gmail.com", "988888888", "123456");
         User u2 = new User( "Alex Green", "alex@gmail.com", "977777777", "123456");
 
-        Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.PAID, u1);
-        Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2);
-        Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.CANCELED, u1);
+        Order o1 = new Order(Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.PAID, u1);
+        Order o2 = new Order(Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2);
+        Order o3 = new Order(Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.CANCELED, u1);
 
         Category cat1 = new Category("Electronics");
         Category cat2 = new Category("Books");
@@ -62,6 +58,12 @@ public class TestConfig implements CommandLineRunner {
 
         productRepositoryJPA.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+
+        orderItemRepositoryJPA.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 
     }
 }

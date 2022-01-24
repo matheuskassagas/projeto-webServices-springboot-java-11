@@ -1,10 +1,13 @@
 package springWeb.DTO.response;
 
 import springWeb.repositoryJPA.entity.Order;
+import springWeb.repositoryJPA.entity.OrderItem;
 import springWeb.repositoryJPA.entity.User;
 import springWeb.repositoryJPA.entity.enums.OrderStatus;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 public class OrderResponse {
 
@@ -13,15 +16,21 @@ public class OrderResponse {
     private Instant moment;
     private Integer orderStatus;
     private User client;
+    private Set<OrderItem> items = new HashSet<>();
 
     public OrderResponse() {
     }
 
-    public OrderResponse(Integer id, Instant moment, OrderStatus orderStatus, User client) {
+    public OrderResponse(Set<OrderItem> items) {
+        this.items = items;
+    }
+
+    public OrderResponse(Integer id, Instant moment, OrderStatus orderStatus, User client, Set<OrderItem> items) {
         this.id = id;
         this.moment = moment;
         this.orderStatus = orderStatus.getCode();
         this.client = client;
+        this.items = items;
     }
 
     public Integer getId() {
@@ -52,11 +61,15 @@ public class OrderResponse {
         return OrderStatus.valueOf(orderStatus);
     }
 
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus.getCode();
     }
 
     public OrderResponse toResponse (Order order){
-        return new OrderResponse(order.getId(), order.getMoment(), order.getOrderStatus(), order.getClient());
+        return new OrderResponse(order.getId(), order.getMoment(), order.getOrderStatus(), order.getClient(), order.getItems());
     }
 }
